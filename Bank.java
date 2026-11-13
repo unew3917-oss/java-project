@@ -1,7 +1,8 @@
 import java.util.Scanner;
+import java.math.BigDecimal;
 public class Bank{
        //variables declaration
-       static double balance = 0;
+       static BigDecimal balance = BigDecimal.ZERO;
        static int option;
        static Scanner scanner = new Scanner(System.in);
    public static void main(String[] args){
@@ -18,9 +19,26 @@ public class Bank{
   System.out.println("5. Exit"); 
   
   //get users input
-  System.out.println("Select service: ");
-   option = scanner.nextInt();
- 
+  
+  while (true) {
+    System.out.println("Select service: ");
+    if(scanner.hasNextInt()){
+      option = scanner.nextInt();
+    
+      if(option > 0 && option < 6){
+        break;
+      }else{
+        System.out.println("Enter a number between 1 and 5");
+        System.out.println("You have selected option: " + option);
+      }
+      
+    }
+    else{
+      System.out.println("Enter a valid number");
+      scanner.next();
+    }
+  
+  }
   switch (option) {
     case 1:
       showBalance();
@@ -52,14 +70,23 @@ public static void deposit(){
   System.out.println("****************************");
   System.out.println(" You have selected Deposit");
   System.out.println("****************************");
-  System.out.println("Enter amount to deposit: ");
-  double amount = scanner.nextDouble();
-  if (amount > 0){
-    balance += amount;
-    System.out.println("You have successfuly deposit: " + amount);
-  }else{
-    System.out.println("Amount should be a positive value");
+  BigDecimal amount;
+  while(true){
+     System.out.println("Enter amount to deposit: ");
+      if(scanner.hasNextDouble()){
+         amount = scanner.nextBigDecimal();
+         if(amount.compareTo(BigDecimal.ZERO) > 0){
+          break;
+         }else{
+          System.out.println("Enter a positive amount");
+         }
+      }else{
+          System.out.println("Enter numbers only");
+          scanner.next();
+      }
   }
+    balance = balance.add(amount);
+    System.out.println("You have successfuly deposit: " + amount);
 }
 
   //withdrawal method
@@ -67,13 +94,28 @@ public static void withdraw(){
        System.out.println("****************************");
   System.out.println("  You have selected Withdrawal");
   System.out.println("****************************");
-  System.out.println("Enter amount to withdraw: ");
-  double amount = scanner.nextDouble();
-  if (amount >= 0 && amount <= balance){
-    balance -= amount;
+  BigDecimal amount;
+  while (true) {
+     System.out.println("Enter amount to withdraw: ");
+     if (scanner.hasNextDouble()) {
+       amount = scanner.nextBigDecimal();
+       if(amount.compareTo(BigDecimal.ZERO) > 0){
+        break;
+       }else{
+        System.out.println("Amount should be positive");
+       }
+
+     }else{
+      System.out.println("Enter valid numbers");
+      scanner.next();
+     }
+  }
+  if (amount.compareTo(BigDecimal.ZERO) > 0 && amount.compareTo(balance) <= 0){
+    balance = balance.subtract(amount);
     System.out.println("You have successfuly withdrawn: " + amount);
   }else{
     System.out.println("Insufficient funds");
+    System.out.println(balance);
   }
 }
 

@@ -7,8 +7,8 @@ public class Bank{
        static Scanner scanner = new Scanner(System.in);
    public static void main(String[] args){
   //display menu
-  boolean situation = true;
-  while (situation) {
+  boolean running = true;
+  while (running) {
     System.out.println("****************************");
   System.out.println("  Welcome to sim toolkit");
   System.out.println("****************************");
@@ -53,7 +53,7 @@ public class Bank{
       System.out.println("Coming soon!");
       break;
     case 5:
-      situation = false;
+      running = false;
        System.out.println("exit");
       break;
     default:
@@ -70,21 +70,7 @@ public static void deposit(){
   System.out.println("****************************");
   System.out.println(" You have selected Deposit");
   System.out.println("****************************");
-  BigDecimal amount;
-  while(true){
-     System.out.println("Enter amount to deposit: ");
-      if(scanner.hasNextDouble()){
-         amount = scanner.nextBigDecimal();
-         if(amount.compareTo(BigDecimal.ZERO) > 0){
-          break;
-         }else{
-          System.out.println("Enter a positive amount");
-         }
-      }else{
-          System.out.println("Enter numbers only");
-          scanner.next();
-      }
-  }
+  BigDecimal amount = readPositiveAmount("Enter amount to deposit");
     balance = balance.add(amount);
     System.out.println("You have successfuly deposit: " + amount);
 }
@@ -94,23 +80,8 @@ public static void withdraw(){
        System.out.println("****************************");
   System.out.println("  You have selected Withdrawal");
   System.out.println("****************************");
-  BigDecimal amount;
-  while (true) {
-     System.out.println("Enter amount to withdraw: ");
-     if (scanner.hasNextDouble()) {
-       amount = scanner.nextBigDecimal();
-       if(amount.compareTo(BigDecimal.ZERO) > 0){
-        break;
-       }else{
-        System.out.println("Amount should be positive");
-       }
-
-     }else{
-      System.out.println("Enter valid numbers");
-      scanner.next();
-     }
-  }
-  if (amount.compareTo(BigDecimal.ZERO) > 0 && amount.compareTo(balance) <= 0){
+   BigDecimal amount = readPositiveAmount("Enter the amount to withdraw: ");
+  if (amount.compareTo(balance) <= 0){
     balance = balance.subtract(amount);
     System.out.println("You have successfuly withdrawn: " + amount);
   }else{
@@ -125,5 +96,25 @@ public static void showBalance(){
   System.out.println("  You have selected Check Balance");
   System.out.println("****************************");
   System.out.println("Balance: " + balance);
+}
+
+//method that extracts read postive amount
+
+public static BigDecimal readPositiveAmount(String prompt){
+      while (true) {
+        System.out.println(prompt);
+      if (scanner.hasNextBigDecimal()) {
+      BigDecimal value = scanner.nextBigDecimal();
+        if(value.compareTo(BigDecimal.ZERO) > 0){
+         return value;
+       }else{
+        System.out.println("Amount should be positive");
+        }
+
+      }else{
+      System.out.println("Enter valid numbers");
+      scanner.next();
+     }
+  }
 }
 }

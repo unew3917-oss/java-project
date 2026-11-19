@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Account {
     private BigDecimal balance;
-    private ArrayList<String> transactions;
+    private ArrayList<String> transactions = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
 
  
